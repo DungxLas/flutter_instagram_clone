@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_instagram_clone/firebase_options.dart';
+import 'package:flutter_instagram_clone/screens/login_screen.dart';
 
 import 'package:flutter_instagram_clone/utils/colors.dart';
-
 import 'package:flutter_instagram_clone/resonsive/mobile_screen_layout.dart';
 import 'package:flutter_instagram_clone/resonsive/responsive_layout.dart';
 import 'package:flutter_instagram_clone/resonsive/web_screen_layout.dart';
@@ -23,7 +24,8 @@ void main() async {
       ),
     );
   } else {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
   }
   runApp(const MyApp());
 }
@@ -40,10 +42,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: mobileBackgroundColor,
       ),
-      home: const ResponsiveLayout(
-        mobileScreenLayout: MobileScreenLayout(),
-        webScreenLayout: WebScreenLayout(),
-      ),
+      // home: const ResponsiveLayout(
+      //   mobileScreenLayout: MobileScreenLayout(),
+      //   webScreenLayout: WebScreenLayout(),
+      // ),
+      home: const LoginScreen(),
     );
   }
 }
