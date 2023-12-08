@@ -5,9 +5,6 @@ import 'package:flutter_instagram_clone/firebase_options.dart';
 import 'package:flutter_instagram_clone/screens/login_screen.dart';
 
 import 'package:flutter_instagram_clone/utils/colors.dart';
-import 'package:flutter_instagram_clone/resonsive/mobile_screen_layout.dart';
-import 'package:flutter_instagram_clone/resonsive/responsive_layout.dart';
-import 'package:flutter_instagram_clone/resonsive/web_screen_layout.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
