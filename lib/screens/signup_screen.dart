@@ -1,8 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_instagram_clone/resources/auth_methods.dart';
+import 'package:flutter_instagram_clone/screens/login_screen.dart';
+import 'package:flutter_instagram_clone/screens/utils.dart';
 import 'package:flutter_instagram_clone/utils/colors.dart';
 import 'package:flutter_instagram_clone/utils/global_variable.dart';
 import 'package:flutter_instagram_clone/widgets/text_field_input.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -14,13 +20,42 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final bool _isLoading = false;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
+  bool _isLoading = false;
+  Uint8List? _image;
 
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _usernameController.dispose();
+    _bioController.dispose();
+  }
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String res = await AuthMethods().signUpUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+      username: _usernameController.text,
+      bio: _bioController.text,
+      file: _image!,
+    );
+
+    if (res == 'success') {
+    } else {}
+  }
+
+  void selectImage() async {
+    Uint8List image = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
   }
 
   @override
@@ -44,6 +79,44 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 65,
               ),
+              Stack(
+                children: [
+                  _image != null
+                      ? CircleAvatar(
+                          radius: 65,
+                          backgroundImage: MemoryImage(_image!),
+                          backgroundColor: Colors.grey,
+                        )
+                      : const CircleAvatar(
+                          radius: 65,
+                          backgroundImage: NetworkImage(
+                            'https://i.stack.imgur.com/l60Hf.png',
+                          ),
+                          backgroundColor: Colors.grey,
+                        ),
+                  Positioned(
+                    bottom: -10,
+                    left: 80,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.add_a_photo,
+                      ),
+                      onPressed: () {}, //chonj anhr avatar
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              TextFieldInput(
+                hintText: 'Enter your username',
+                textInputType: TextInputType.text,
+                textEditingController: _usernameController,
+              ),
+              const SizedBox(
+                height: 25,
+              ),
               TextFieldInput(
                 hintText: 'Enter your email',
                 textInputType: TextInputType.emailAddress,
@@ -59,10 +132,18 @@ class _SignupScreenState extends State<SignupScreen> {
                 isPass: true,
               ),
               const SizedBox(
+                height: 25,
+              ),
+              TextFieldInput(
+                hintText: 'Enter your bio',
+                textInputType: TextInputType.text,
+                textEditingController: _bioController,
+              ),
+              const SizedBox(
                 height: 20,
               ),
               InkWell(
-                onTap: () {},
+                onTap: signUpUser,
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,
@@ -78,7 +159,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     color: blueColor,
                   ),
                   child: !_isLoading
-                      ? const Text('Log in')
+                      ? const Text('Sign up')
                       : const CircularProgressIndicator(
                           color: primaryColor,
                         ),
@@ -95,17 +176,21 @@ class _SignupScreenState extends State<SignupScreen> {
                       vertical: 10,
                     ),
                     child: const Text(
-                      'Don' 't have an account? ',
+                      'Already have an account?',
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                    ),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         vertical: 10,
                       ),
                       child: const Text(
-                        'Signup',
+                        ' Login.',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),

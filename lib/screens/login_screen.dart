@@ -137,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       vertical: 10,
                     ),
                     child: const Text(
-                      'Don' 't have an account? ',
+                      'Don\'t have an account? ',
                     ),
                   ),
                   GestureDetector(
