@@ -4,6 +4,7 @@ import 'package:flutter_instagram_clone/resonsive/responsive_layout.dart';
 import 'package:flutter_instagram_clone/resonsive/web_screen_layout.dart';
 import 'package:flutter_instagram_clone/resources/auth_methods.dart';
 import 'package:flutter_instagram_clone/screens/signup_screen.dart';
+import 'package:flutter_instagram_clone/screens/utils.dart';
 import 'package:flutter_instagram_clone/utils/colors.dart';
 import 'package:flutter_instagram_clone/utils/global_variable.dart';
 import 'package:flutter_instagram_clone/widgets/text_field_input.dart';
@@ -56,11 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = false;
       });
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(res),
-          ),
-        );
+        showSnackBar(context, res);
       }
     }
   }

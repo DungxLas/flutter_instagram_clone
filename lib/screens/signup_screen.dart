@@ -1,6 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_instagram_clone/resonsive/mobile_screen_layout.dart';
+import 'package:flutter_instagram_clone/resonsive/responsive_layout.dart';
+import 'package:flutter_instagram_clone/resonsive/web_screen_layout.dart';
 import 'package:flutter_instagram_clone/resources/auth_methods.dart';
 import 'package:flutter_instagram_clone/screens/login_screen.dart';
 import 'package:flutter_instagram_clone/screens/utils.dart';
@@ -48,7 +51,28 @@ class _SignupScreenState extends State<SignupScreen> {
     );
 
     if (res == 'success') {
-    } else {}
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const ResponsiveLayout(
+              mobileScreenLayout: MobileScreenLayout(),
+              webScreenLayout: WebScreenLayout(),
+            ),
+          ),
+        );
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      if (context.mounted) {
+        showSnackBar(context, res);
+      }
+    }
   }
 
   void selectImage() async {
@@ -101,7 +125,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       icon: const Icon(
                         Icons.add_a_photo,
                       ),
-                      onPressed: () {}, //chonj anhr avatar
+                      onPressed: selectImage, //chonj anhr avatar
                     ),
                   ),
                 ],
